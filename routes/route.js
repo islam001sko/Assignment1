@@ -1,58 +1,81 @@
 const express = require('express');
-const bodyParses = require('body-parser');
+const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 
-app.use(bodyParses.urlencoded({ extended: true }));
-
-app.get('/', function (req, res) {
-
-    const indexPath = path.join(__dirname, '..', 'views', 'index.html');
-
-    res.sendFile(indexPath, (err) => {
-        if (err) {
-            console.error('Error sending file:', err);
-            res.status(err.status).end();
-        } else {
-            console.log('File sent successfully');
-        }
-    });
-});
-
-module.exports = app;
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.post('/index.html', function (req, res) {
-    var name = req.body.name;
-    var gender = req.body.gender;
-    var age = req.body.age;
-    var height = Number(req.body.height)
-    var weight = Number(req.body.weight);
-    var operation = req.body.operation;
-    var result = weight / (height * height);
+    const name = req.body.name;
+    const gender = req.body.gender;
+    const age = req.body.age;
+    const height = Number(req.body.height);
+    const weight = Number(req.body.weight);
 
-    if (operation === 'do') {
-        if (age === 'teen') {
-            if (gender === 'male') {
-                res.send("Result for young male person is " + result);
-            } else if (gender === 'female') {
-                res.send("Result for young female person is " + result);
-            } else {
-                res.send("Invalid gender group.");
+    const result = weight / (height * height);
+
+    let resultMessage = '';
+
+    if (age === 'teen') {
+        if (gender === 'male') {
+            if (result < 18) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI below 18 for males aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 18 && result < 25) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI from 18 to 25 for males aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 25 && result < 30) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI from 25 to 30 for males aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 30 && result < 35) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI from 30 to 35 for males aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 35 && result < 40) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI from 35 to 40 for males aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 40 && result < 45) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI from 40 to 45 for males aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 45) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI more than 45 for males aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
             }
-        } else if (age === 'older') {
-            res.send("Result for older people is " + result);
+        } else if (gender === 'female') {
+            if (result < 18) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI below 18 for female aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 18 && result < 25) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI from 18 to 25 for female aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 25 && result < 30) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI from 25 to 30 for female aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 30 && result < 35) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI from 30 to 35 for female aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 35 && result < 40) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI from 35 to 40 for female aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 40 && result < 45) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI from 40 to 45 for female aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            } else if (result > 45) {
+                resultMessage = "Result for young male person is " + result + "Having a BMI more than 45 for female aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+            }
         } else {
-            res.send("Invalid age group.");
+            resultMessage = "Invalid gender group.";
+        }
+    } else if (age === 'older') {
+        if (result < 18) {
+            resultMessage = "Result for young male person is " + result + "Having a BMI below 18 for people aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+        } else if (result > 18 && result < 25) {
+            resultMessage = "Result for young male person is " + result + "Having a BMI from 18 to 25 for people aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+        } else if (result > 25 && result < 30) {
+            resultMessage = "Result for young male person is " + result + "Having a BMI from 25 to 30 for people aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+        } else if (result > 30 && result < 35) {
+            resultMessage = "Result for young male person is " + result + "Having a BMI from 30 to 35 for people aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+        } else if (result > 35 && result < 40) {
+            resultMessage = "Result for young male person is " + result + "Having a BMI from 35 to 40 for people aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+        } else if (result > 40 && result < 45) {
+            resultMessage = "Result for young male person is " + result + "Having a BMI from 40 to 45 for people aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
+        } else if (result > 45) {
+            resultMessage = "Result for young male person is " + result + "Having a BMI more than 45 for people aged 2 to 19 is considered underweight. This indicates that based on your height and weight, your body mass index falls below the healthy range expected for someone in your age and gender category.";
         }
     } else {
-        res.send("Invalid operation or age group.");
+        resultMessage = "Invalid age group.";
     }
 
-
+    res.redirect(`/result.html?message=${encodeURIComponent(resultMessage)}`);
 });
 
-
-
 app.listen(3000, function () {
-    console.log('server is running on port 3000');
+    console.log('Server is running on port 3000');
 });
