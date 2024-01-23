@@ -6,6 +6,10 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, '..', 'views', 'index.html'));
+});
+
 app.post('/index.html', function (req, res) {
     const name = req.body.name;
     const gender = req.body.gender;
